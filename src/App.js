@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+const messages = ["Stability", "Millionaire", "Billionaire"];
 
-function App() {
+export default function App() {
+  const [step, setStep] = useState(1);
+  const [isOpen, setIsOpen] = useState(true);
+  const previousFlag = step > 1;
+  const nextFlag = step < 3;
+
+  function handlePrevious() {
+    if (previousFlag) setStep(step - 1);
+  }
+
+  function handleNext() {
+    if (nextFlag) setStep(step + 1);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <button className="close" onClick={() => setIsOpen(!isOpen)}>
+        &times;
+      </button>
+      {isOpen && (
+        <div className="steps">
+          <div className="numbers">
+            <div className={step >= 1 && "active"}>1</div>
+            <div className={step >= 2 && "active"}>2</div>
+            <div className={step >= 3 && "active"}>3</div>
+          </div>
+          <p className="message">
+            Step {step}: {messages[step - 1]}
+          </p>
+          <div className="buttons">
+            <Button
+              style={{ background: "#7950f2", color: "#fff" }}
+              onClick={handlePrevious}
+              // onMouseEnter={() => alert("test")}
+            >
+              <span>👈</span>previous
+            </Button>
+            <Button style={{ background: "#7950f2", color: "#fff" }} onClick={handleNext}>
+              next<span>👉</span>
+            </Button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
-export default App;
+function Button({ onClick, children }) {
+  return (
+    <button style={{ background: "#7850f2", color: "#fff" }} onClick={onClick}>
+      {children}
+    </button>
+  );
+}
